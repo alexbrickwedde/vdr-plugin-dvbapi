@@ -2,6 +2,7 @@
 #define ___SCDVBDEVICE_H
 
 #include <linux/dvb/ca.h>
+#include "ca_compat.h"
 #include <vdr/dvbdevice.h>
 #include <vdr/thread.h>
 #include <stdlib.h>
