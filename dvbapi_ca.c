@@ -35,6 +35,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <linux/dvb/ca.h>
+#include "ca_compat.h"
 #include <linux/dvb/dmx.h>
 #include <linux/dvb/frontend.h>
 #include <linux/ioctl.h>
