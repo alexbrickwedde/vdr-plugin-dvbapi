@@ -3,8 +3,8 @@
  * removed from <linux/dvb/ca.h> in Linux kernel 4.14.
  */
 
-#ifndef ___CA_COMPAT_H
-#define ___CA_COMPAT_H
+#ifndef CA_COMPAT_H_
+#define CA_COMPAT_H_
 
 #include <linux/dvb/ca.h>
 #include <linux/ioctl.h>
@@ -18,4 +18,4 @@ typedef struct ca_pid {
 #define CA_SET_PID _IOW('o', 135, ca_pid_t)
 #endif
 
-#endif // ___CA_COMPAT_H
+#endif // CA_COMPAT_H_
