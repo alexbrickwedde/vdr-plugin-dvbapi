@@ -28,12 +28,17 @@ SCCIAdapter::SCCIAdapter(SCDVBDevice *sCDVBDevice, int cardIndex)
  memset(version,1,sizeof(version));
  memset(slots,0,sizeof(slots));
  caidsLength=0;
- for(cChannel *channel=Channels.First(); channel; channel=Channels.Next(channel))
+ int channelCount=0;
  {
-  if(!channel->GroupSep() && channel->Ca()>=CA_ENCRYPTED_MIN)
+  LOCK_CHANNELS_READ;
+  channelCount=Channels->Count();
+  for(const cChannel *channel=Channels->First(); channel; channel=Channels->Next(channel))
   {
-   for(const int *ids=channel->Caids(); *ids; ids++)
-	 addCaid(0,caidsLength,(unsigned short)*ids);
+   if(!channel->GroupSep() && channel->Ca()>=CA_ENCRYPTED_MIN)
+   {
+    for(const int *ids=channel->Caids(); *ids; ids++)
+	  addCaid(0,caidsLength,(unsigned short)*ids);
+   }
   }
  }
  rb=new cRingBufferLinear(KILOBYTE(8),6+LEN_OFF,false,"SC-CI adapter read");
@@ -42,7 +47,7 @@ SCCIAdapter::SCCIAdapter(SCDVBDevice *sCDVBDevice, int cardIndex)
    rb->SetTimeouts(0,CAM_READ_TIMEOUT);
    frame.SetRb(rb);
  }
- isyslog("DVBAPI: SCCIAdapter::SCCIAdapter build caid table with %i caids for %i channels",caidsLength,Channels.Count());
+ isyslog("DVBAPI: SCCIAdapter::SCCIAdapter build caid table with %i caids for %i channels",caidsLength,channelCount);
  SetDescription("SC-CI adapter on device %d",cardIndex);
  for(int i=0; i<MAX_CI_SLOTS && i*MAX_CI_SLOT_CAIDS<caidsLength; i++)
   slots[i]=new SCCAMSlot(this,cardIndex,i);
